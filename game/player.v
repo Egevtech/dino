@@ -6,7 +6,8 @@ const jump_frames = 30 // Jump for X frames
 const jump_height = 3 // Jump height
 const bottom_height = 2 // Bottom line position
 const player_x_pos = 2 // Player position
-const player_char = `O` // Player drawable rune
+const player_char = `O` // Player drawable rune (Давайте считать, что динозавр 
+							  // объелся и теперь круглый, окей?)
 
 struct Player {
 pub mut:
@@ -45,27 +46,30 @@ pub fn (mut p Player) tick(frame i64) {
 	}
 }
 
-pub fn (p Player) draw(height int) {
-	y := match true {
-		p.jump { height - jump_height - bottom_height }
-		else { height - bottom_height }
+fn (p Player) get_y_pos(height int) int { 
+	return match p.jump {
+		true { height - jump_height - bottom_height}
+		false { height - bottom_height }
 	}
+}
 
-	term.set_cursor_position(x: player_x_pos, y: y)
+pub fn (p Player) draw(height int) {
+	term.set_cursor_position(x: player_x_pos, y: p.get_y_pos(height))
 
 	print(player_char)
 }
 
-pub fn (p Player) check_collision(e Enemy) bool {
+pub fn (p Player) check_collision(e Enemy, height int) bool {
 	if player_x_pos == e.x {
 		match e {
 			Bird {
-				if p.jump {
+				if e.y == p.get_y_pos(height) {
 					return true
 				}
 			}
 			Cactus {
 				if !p.jump {
+					return true
 				}
 			}
 		}
