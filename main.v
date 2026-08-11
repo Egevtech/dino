@@ -4,14 +4,14 @@ import term
 import time
 import game
 
-const target_frame_time = 16 * time.millisecond // ~60 FPS
+const target_frame_time = 16 * time.millisecond // ~62 FPS
 
 const score_i = 1 // Add i to score
 const score_k = 2 // every k frames
 
 const enemy_speed = 2 // step() enemy every X frames
-const enemy_step_size = 2 // enemy step size
-const enemy_count = 2
+const enemy_step_size = 2 // move enemy at X every step()
+const enemy_count = 2 // enemy count
 
 fn main() {
 	term.clear()
