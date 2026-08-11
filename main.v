@@ -125,6 +125,8 @@ fn main() {
 						exit(0)
 					} else if akey == `r` {
 						gi = game.GameInstance.new()
+						enemies = []game.Enemy{cap: 2}
+						enemies << game.Enemy.new(width)
 						break
 					}
 				}
