@@ -33,7 +33,7 @@ fn main() {
 	mut gi := game.GameInstance.new()
 	mut player := game.Player.new()
 
-	mut enemies := []game.Enemy{}
+	mut enemies := []game.Enemy{cap: enemy_count}
 	enemies << game.Enemy.new(width)
 
 	for {
