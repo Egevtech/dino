@@ -12,7 +12,7 @@ pub mut:
 fn Cactus.new(width int) Cactus {
 	return Cactus{
 		x:      width
-		height: rand.element([1, 2, 3]) or { panic(err) }
+		height: rand.element([2, 2, 3]) or { panic(err) }
 	}
 }
 
@@ -26,19 +26,20 @@ pub mut:
 fn Bird.new(width int) Bird {
 	return Bird{
 		x:     width
-		y:     rand.element([3, 4]) or { panic(err) }
-		width: rand.element([1, 2, 3]) or { panic(err) }
+		y:     rand.element([4, 5, 5]) or { panic(err) }
+		width: rand.element([2, 3]) or { panic(err) }
 	}
 }
 
 pub type Enemy = Cactus | Bird
 
 pub fn Enemy.new(width int) Enemy {
-	return rand.element([Enemy(Cactus.new(width)), Enemy(Bird.new(width))]) or { panic(err) }
+	return rand.element([Enemy(Cactus.new(width)), Enemy(Cactus.new(width)), Enemy(Cactus.new(width)),
+		Enemy(Bird.new(width))]) or { panic(err) }
 }
 
-pub fn (mut e Enemy) step() {
-	e.x--
+pub fn (mut e Enemy) step(step_size int) {
+	e.x -= step_size
 }
 
 pub fn (e Enemy) draw(term_height int) {
@@ -48,17 +49,16 @@ pub fn (e Enemy) draw(term_height int) {
 		Cactus {
 			term.set_cursor_position(x: e.x, y: height)
 			for _ in 0 .. e.height {
-				print('#')
+				print('# ')
+				term.cursor_back(2)
 				term.cursor_up(1)
 			}
 		}
 		Bird {
-			term.set_cursor_position(x: e.x, y: e.y)
-			print('<')
-			term.cursor_forward(1)
+			term.set_cursor_position(x: e.x, y: term_height - e.y)
+			print('< ')
 			for _ in 0 .. e.width - 1 {
-				print('=')
-				term.cursor_forward(1)
+				print('= ')
 			}
 		}
 	}

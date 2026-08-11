@@ -33,8 +33,6 @@ pub fn (mut p Player) jump(frame i64) {
 		return
 	}
 
-	term.clear()
-
 	p.jump = true
 	p.jump_until = frame + jump_frames
 }
@@ -43,7 +41,6 @@ pub fn (mut p Player) tick(frame i64) {
 	if p.jump {
 		if p.jump_until == frame {
 			p.jump = false
-			term.clear()
 		}
 	}
 }

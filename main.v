@@ -5,17 +5,18 @@ import time
 import game
 
 const target_frame_time = 16 * time.millisecond // ~60 FPS
-const frames_per_clear = 100 // Clear all terminal every X frames
 
 const score_i = 1 // Add i to score
 const score_k = 2 // every k frames
+
+const enemy_speed = 2 // step() enemy every X frames
+const enemy_step_size = 2 // enemy step size
 
 fn main() {
 	term.clear()
 
 	width, height := 100, 15
-
-	term.set_cursor_position(x: 5, y: 1)
+	// TODO: Check if terminal size less than needed
 
 	mut frames := u64(0)
 
@@ -23,13 +24,10 @@ fn main() {
 
 	mut gi := game.GameInstance.new()
 	mut player := game.Player.new()
+	mut enemy := game.Enemy.new(width)
 
 	for {
-		if frames++ % frames_per_clear == 0 {
-			term.clear()
-			term.set_cursor_position(x: 0, y: 0)
-		}
-
+		frames++
 		sw := time.new_stopwatch()
 
 		// Score
@@ -70,6 +68,18 @@ fn main() {
 		player.tick(frames)
 		player.draw(height)
 
+		// Enemy logic
+		if frames % enemy_speed == 0 {
+			enemy.step(enemy_step_size)
+		}
+
+		enemy.draw(height)
+
+		if enemy.get_pos() <= 0 {
+			enemy = game.Enemy.new(width)
+		}
+
+		// Other stuff
 		work_time := sw.elapsed()
 
 		diff := target_frame_time - work_time
@@ -82,6 +92,7 @@ fn main() {
 		term.set_cursor_position(x: width / 2, y: height / 2)
 
 		time.sleep(compensation)
+		term.clear()
 
 		frame_time := sw.elapsed().milliseconds()
 
