@@ -53,10 +53,9 @@ fn main() {
 
 		diff := target_frame_time - work_time
 
-		compensation := if diff < 0 {
-			0
-		} else {
-			diff
+		compensation := match true {
+			diff < 0 { 0 }
+			else { diff }
 		}
 
 		term.set_cursor_position(x: width / 2, y: height / 2)
