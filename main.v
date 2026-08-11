@@ -79,6 +79,28 @@ fn main() {
 			enemy = game.Enemy.new(width)
 		}
 
+		// Collision check
+
+		if player.check_collision(enemy, height) {
+			term.clear()
+			game_over_str := 'Game over! Your score: ${gi.score}'
+			term.set_cursor_position(x: (width / 2) - (game_over_str.len / 2), y: height / 2)
+			print("${game_over_str}")
+			term.cursor_down(1)
+			instr_str := 'Press "r" to restart, or "q" to quit'
+			term.set_cursor_position(x: (width / 2) - (instr_str.len / 2), y: (height / 2) + 1)
+			print("${instr_str}")
+
+			for {
+				akey := term.key_pressed(echo: false, blocking: false)
+
+				if akey == `q` { term.clear(); exit(0) }
+				else if akey == `r` { gi = game.GameInstance.new(); break }
+			}
+
+			continue
+		}
+
 		// Other stuff
 		work_time := sw.elapsed()
 
