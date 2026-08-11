@@ -1,7 +1,7 @@
 module game
 
 pub struct GameInstance {
-pub:
+pub mut:
 	score u64
 }
 
