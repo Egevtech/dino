@@ -58,3 +58,21 @@ pub fn (p Player) draw(height int) {
 
 	print(player_char)
 }
+
+pub fn (p Player) check_collision(e Enemy) bool {
+	if player_x_pos == e.x {
+		match e {
+			Bird {
+				if p.jump {
+					return true
+				}
+			}
+			Cactus {
+				if !p.jump {
+				}
+			}
+		}
+	}
+
+	return false
+}
