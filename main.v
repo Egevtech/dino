@@ -99,7 +99,7 @@ fn main() {
 		for enemy in enemies {
 			enemy.draw(height)
 
-			if enemy.x < 0 {
+			if enemy.x <= 0 {
 				enemies.pop_left()
 				enemies << game.Enemy.new(width)
 			}
