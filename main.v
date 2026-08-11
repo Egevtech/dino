@@ -165,6 +165,9 @@ fn main() {
 		term.erase_line_clear()
 		println('Player: ${player}')
 
+		term.erase_line_clear()
+		println('Enemy array info: cap: ${enemies.cap}, len: ${enemies.len}')
+
 		term.set_cursor_position(x: width / 2, y: height / 2)
 	}
 }
