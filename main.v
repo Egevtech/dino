@@ -7,6 +7,9 @@ import game
 const target_frame_time = 16 * time.millisecond // ~60 FPS
 const frames_per_clear = 100 // Clear all terminal every X frames
 
+const score_i = 1 // Add i to score
+const score_k = 1 // every k frames
+
 fn main() {
 	term.clear()
 
@@ -14,20 +17,29 @@ fn main() {
 
 	term.set_cursor_position(x: 5, y: 1)
 
-	mut frames := 0
+	mut frames := u64(0)
 
 	term.hide_cursor()
 
-	gi := game.GameInstance.new()
+	mut gi := game.GameInstance.new()
 
 	for {
-		if frames++ > frames_per_clear {
-			frames = 0
+		if frames++ % frames_per_clear == 0 {
 			term.clear()
 			term.set_cursor_position(x: 0, y: 0)
 		}
 
 		sw := time.new_stopwatch()
+
+		// Score
+
+		if frames % score_k == 0 {
+			gi.score += score_i
+		}
+
+		score_line := 'Score: ${gi.score}'
+		term.set_cursor_position(x: width - score_line.len, y: 0)
+		print(score_line)
 
 		// bottom line
 		for i in 0 .. width {
