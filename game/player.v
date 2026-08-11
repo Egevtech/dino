@@ -63,7 +63,7 @@ pub fn (p Player) check_collision(e Enemy, height int) bool {
 	if player_x_pos == e.x {
 		match e {
 			Bird {
-				if e.y == p.get_y_pos(height) {
+				if height - e.y == p.get_y_pos(height) {
 					return true
 				}
 			}
