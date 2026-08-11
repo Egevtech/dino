@@ -17,7 +17,14 @@ fn main() {
 	term.clear()
 
 	width, height := 100, 15
-	// TODO: Check if terminal size less than needed
+
+	{
+		ts_w, ts_h := term.get_terminal_size()
+
+		if ts_w < width || ts_h < height {
+			panic('This terminal is smaller, then needed (${ts_w}x${ts_h} < ${width}x${height})')
+		}
+	}
 
 	mut frames := u64(0)
 
