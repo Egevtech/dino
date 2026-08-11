@@ -2,6 +2,7 @@ module main
 
 import term
 import time
+import game
 
 const target_frame_time = 16 * time.millisecond // ~60 FPS
 const frames_per_clear = 100 // Clear all terminal every X frames
@@ -16,6 +17,8 @@ fn main() {
 	mut frames := 0
 
 	term.hide_cursor()
+
+	gi := game.GameInstance.new()
 
 	for {
 		if frames++ > frames_per_clear {
