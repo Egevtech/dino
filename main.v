@@ -11,6 +11,7 @@ const score_k = 2 // every k frames
 
 const enemy_speed = 2 // step() enemy every X frames
 const enemy_step_size = 2 // enemy step size
+const enemy_count = 2
 
 fn main() {
 	term.clear()
@@ -24,7 +25,9 @@ fn main() {
 
 	mut gi := game.GameInstance.new()
 	mut player := game.Player.new()
-	mut enemy := game.Enemy.new(width)
+
+	mut enemies := []game.Enemy{}
+	enemies << game.Enemy.new(width)
 
 	for {
 		frames++
@@ -69,36 +72,53 @@ fn main() {
 		player.draw(height)
 
 		// Enemy logic
-		if frames % enemy_speed == 0 {
-			enemy.step(enemy_step_size)
+		if enemies.len < enemy_count && enemies.len != 0 {
+			if enemies[enemies.len - 1].x == width / 2 {
+				enemies << game.Enemy.new(width)
+			}
 		}
 
-		enemy.draw(height)
+		if frames % enemy_speed == 0 {
+			for mut enemy in enemies {
+				enemy.step(enemy_step_size)
+			}
+		}
 
-		if enemy.get_pos() <= 0 {
-			enemy = game.Enemy.new(width)
+		for enemy in enemies {
+			enemy.draw(height)
+
+			if enemy.x < 0 {
+				enemies.pop_left()
+				enemies << game.Enemy.new(width)
+			}
 		}
 
 		// Collision check
+		for enemy in enemies {
+			if player.check_collision(enemy, height) {
+				term.clear()
+				game_over_str := 'Game over! Your score: ${gi.score}'
+				term.set_cursor_position(x: (width / 2) - (game_over_str.len / 2), y: height / 2)
+				print('${game_over_str}')
+				term.cursor_down(1)
+				instr_str := 'Press "r" to restart, or "q" to quit'
+				term.set_cursor_position(x: (width / 2) - (instr_str.len / 2), y: (height / 2) + 1)
+				print('${instr_str}')
 
-		if player.check_collision(enemy, height) {
-			term.clear()
-			game_over_str := 'Game over! Your score: ${gi.score}'
-			term.set_cursor_position(x: (width / 2) - (game_over_str.len / 2), y: height / 2)
-			print("${game_over_str}")
-			term.cursor_down(1)
-			instr_str := 'Press "r" to restart, or "q" to quit'
-			term.set_cursor_position(x: (width / 2) - (instr_str.len / 2), y: (height / 2) + 1)
-			print("${instr_str}")
+				for {
+					akey := term.key_pressed(echo: false, blocking: false)
 
-			for {
-				akey := term.key_pressed(echo: false, blocking: false)
+					if akey == `q` {
+						term.clear()
+						exit(0)
+					} else if akey == `r` {
+						gi = game.GameInstance.new()
+						break
+					}
+				}
 
-				if akey == `q` { term.clear(); exit(0) }
-				else if akey == `r` { gi = game.GameInstance.new(); break }
+				continue
 			}
-
-			continue
 		}
 
 		// Other stuff
