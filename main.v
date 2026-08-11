@@ -3,6 +3,8 @@ module main
 import term
 import time
 import game
+import flag
+import os
 
 const target_frame_time = 16 * time.millisecond // ~62 FPS
 
@@ -14,6 +16,9 @@ const enemy_step_size = 2 // move enemy at X every step()
 const enemy_count = 2 // enemy count
 
 fn main() {
+	mut fp := flag.new_flag_parser(os.args)
+	debug := fp.bool('debug', `d`, false, 'Enable debug mode')
+
 	term.clear()
 
 	width, height := 100, 15
@@ -145,28 +150,30 @@ fn main() {
 
 		frame_time := sw.elapsed().milliseconds()
 
-		term.set_cursor_position(x: 0, y: 0)
+		if debug {
+			term.set_cursor_position(x: 0, y: 0)
 
-		term.erase_line_clear()
-		println('Frame: ${frames}')
+			term.erase_line_clear()
+			println('Frame: ${frames}')
 
-		term.erase_line_clear()
-		println('Work time: ${work_time.milliseconds()}ms')
+			term.erase_line_clear()
+			println('Work time: ${work_time.milliseconds()}ms')
 
-		term.erase_line_clear()
-		println('Compensation: ${compensation / time.millisecond}ms')
+			term.erase_line_clear()
+			println('Compensation: ${compensation / time.millisecond}ms')
 
-		term.erase_line_clear()
-		println('Frame time: ${frame_time}ms')
+			term.erase_line_clear()
+			println('Frame time: ${frame_time}ms')
 
-		term.erase_line_clear()
-		println('FPS: ~${time.second / frame_time}')
+			term.erase_line_clear()
+			println('FPS: ~${time.second / frame_time}')
 
-		term.erase_line_clear()
-		println('Player: ${player}')
+			term.erase_line_clear()
+			println('Player: ${player}')
 
-		term.erase_line_clear()
-		println('Enemy array info: cap: ${enemies.cap}, len: ${enemies.len}')
+			term.erase_line_clear()
+			println('Enemy array info: cap: ${enemies.cap}, len: ${enemies.len}')
+		}
 
 		term.set_cursor_position(x: width / 2, y: height / 2)
 	}
