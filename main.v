@@ -8,7 +8,7 @@ const target_frame_time = 16 * time.millisecond // ~60 FPS
 const frames_per_clear = 100 // Clear all terminal every X frames
 
 const score_i = 1 // Add i to score
-const score_k = 1 // every k frames
+const score_k = 2 // every k frames
 
 fn main() {
 	term.clear()
@@ -22,6 +22,7 @@ fn main() {
 	term.hide_cursor()
 
 	mut gi := game.GameInstance.new()
+	mut player := game.Player.new()
 
 	for {
 		if frames++ % frames_per_clear == 0 {
@@ -55,7 +56,7 @@ fn main() {
 
 		match key {
 			` ` {
-				println('Jump!')
+				player.jump(frames)
 			}
 			`q` {
 				term.set_cursor_position(x: 0, y: height)
@@ -63,6 +64,11 @@ fn main() {
 			}
 			else {}
 		}
+
+		// Player logic
+
+		player.tick(frames)
+		player.draw(height)
 
 		work_time := sw.elapsed()
 
@@ -95,6 +101,9 @@ fn main() {
 
 		term.erase_line_clear()
 		println('FPS: ~${time.second / frame_time}')
+
+		term.erase_line_clear()
+		println('Player: ${player}')
 
 		term.set_cursor_position(x: width / 2, y: height / 2)
 	}
