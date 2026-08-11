@@ -3,7 +3,7 @@ module game
 import rand
 import term
 
-struct Cactus {
+pub struct Cactus {
 pub mut:
 	x      int
 	height int
@@ -16,7 +16,7 @@ fn Cactus.new(width int) Cactus {
 	}
 }
 
-struct Bird {
+pub struct Bird {
 pub mut:
 	x     int
 	y     int
@@ -31,17 +31,17 @@ fn Bird.new(width int) Bird {
 	}
 }
 
-type Enemy = Cactus | Bird
+pub type Enemy = Cactus | Bird
 
-fn Enemy.new(width int) Enemy {
+pub fn Enemy.new(width int) Enemy {
 	return rand.element([Enemy(Cactus.new(width)), Enemy(Bird.new(width))]) or { panic(err) }
 }
 
-fn (mut e Enemy) step() {
+pub fn (mut e Enemy) step() {
 	e.x--
 }
 
-fn (e Enemy) draw(term_height int) {
+pub fn (e Enemy) draw(term_height int) {
 	height := term_height - 2
 
 	match e {
@@ -62,4 +62,8 @@ fn (e Enemy) draw(term_height int) {
 			}
 		}
 	}
+}
+
+pub fn (e Enemy) get_pos() int {
+	return e.x
 }
