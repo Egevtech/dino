@@ -26,7 +26,7 @@ pub mut:
 fn Bird.new(width int) Bird {
 	return Bird{
 		x:     width
-		y:     rand.element([4, 5, 5]) or { panic(err) }
+		y:     rand.element([2, 2, 4, 5, 5]) or { panic(err) }
 		width: rand.element([2, 3]) or { panic(err) }
 	}
 }
