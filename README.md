@@ -41,4 +41,5 @@ v run .
 
 - The game expects a terminal size of at least `100x15`.
 - It uses the built-in `term` module for rendering and input.
+- Run with `--debug` to enable debugging output.
 - This README was written by Github Copilot with a small edit from me, and the rest was created without using AI.
