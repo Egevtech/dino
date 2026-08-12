@@ -37,6 +37,7 @@ fn main() {
 
 	mut gi := game.GameInstance.new()
 	mut player := game.Player.new()
+	mut best := u64(0)
 
 	mut enemies := []game.Enemy{cap: enemy_count}
 	enemies << game.Enemy.new(width)
@@ -51,9 +52,17 @@ fn main() {
 			gi.score += score_i
 		}
 
+		if gi.score > best {
+			best = gi.score
+		}
+
 		score_line := 'Score: ${gi.score}'
-		term.set_cursor_position(x: width - score_line.len, y: 0)
+		term.set_cursor_position(x: width - score_line.len, y: 1)
 		print(score_line)
+
+		best_score_line := 'Best: ${best}'
+		term.set_cursor_position(x: width - best_score_line.len, y: 2)
+		print(best_score_line)
 
 		// bottom line
 		for i in 0 .. width {
