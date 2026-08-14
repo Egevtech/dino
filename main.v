@@ -94,7 +94,7 @@ fn main() {
 
 		// Enemy logic
 		if enemies.len < enemy_count && enemies.len != 0 {
-			if enemies[enemies.len - 1].x == width / 2 {
+			if enemies[enemies.len - 1].x <= width - (width / enemy_count) {
 				enemies << game.Enemy.new(width)
 			}
 		}
@@ -183,7 +183,7 @@ fn main() {
 			println('Player: ${player}')
 
 			term.erase_line_clear()
-			println('Enemy array info: cap: ${enemies.cap}, len: ${enemies.len}')
+			println('Enemy array info: cap: ${enemies.cap}, len: ${enemies.len}, data: ${enemies}')
 		}
 
 		term.set_cursor_position(x: width / 2, y: height / 2)
