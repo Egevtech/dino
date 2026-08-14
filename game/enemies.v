@@ -33,6 +33,19 @@ fn Bird.new(width int) Bird {
 
 pub type Enemy = Cactus | Bird
 
+pub fn (es []Enemy) str() string {
+	mut str := '['
+
+	for e in es {
+		str += match e {
+			Bird { 'bird' }
+			Cactus { 'cactus' }
+		} + ', '
+	}
+
+	return str[..str.len - 2] + ']'
+}
+
 pub fn Enemy.new(width int) Enemy {
 	return rand.element([Enemy(Cactus.new(width)), Enemy(Cactus.new(width)), Enemy(Cactus.new(width)),
 		Enemy(Bird.new(width))]) or { panic(err) }
