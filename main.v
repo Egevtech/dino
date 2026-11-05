@@ -12,7 +12,7 @@ pub mut:
 fn event(e &tui.Event, _x voidptr) {
 	if e.typ == .key_down {
 		match e.code {
-			.escape {
+			.escape, .q {
 				exit(0)
 			}
 			else {}
