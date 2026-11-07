@@ -1,5 +1,8 @@
+module main
+
 import term.ui as tui
 import term
+import game
 
 struct App {
 mut:
@@ -7,13 +10,19 @@ mut:
 
 pub mut:
 	score u64
+
+	player game.Player
 }
 
-fn event(e &tui.Event, _x voidptr) {
+fn event(e &tui.Event, x voidptr) {
+	mut app := unsafe { &App(x) }
 	if e.typ == .key_down {
 		match e.code {
 			.escape, .q {
 				exit(0)
+			}
+			.space {
+				app.player.jump()
 			}
 			else {}
 		}
@@ -33,6 +42,8 @@ fn frame(x voidptr) {
 	app.tui.set_bg_color(r: 255, g: 255, b: 255)
 
 	app.tui.draw_line(0, height - 2, width - 1, height - 2)
+
+	app.player.draw(app.tui)
 
 	app.tui.reset()
 	app.tui.flush()
